@@ -67,9 +67,9 @@ def register_user_for_event(
 
     # 5. Check event capacity
     confirmed_count = db.scalar(
-        select(Registration.id).where(
-            Registration.event_id == event_id,
-            Registration.status == "confirmed",
+    select(func.count(Registration.id)).where(
+        Registration.event_id == event_id,
+        Registration.status == "confirmed",
         )
     )
 
@@ -91,6 +91,51 @@ def register_user_for_event(
     db.add(registration)
 
     # 7. Save to database
+    try:
+        db.commit()
+        db.refresh(registration)
+
+    except Exception:
+        db.rollback()
+        raise
+
+    return registration
+
+def cancel_registration(
+    db: Session,
+    user_id: UUID,
+    event_id: UUID,
+) -> Registration:
+
+    # 1. Find the registration
+    registration = db.scalar(
+        select(Registration).where(
+            Registration.user_id == user_id,
+            Registration.event_id == event_id,
+        )
+    )
+
+    if not registration:
+        raise ValueError(
+            "User is not registered for this event."
+        )
+
+    # 2. Check registration status
+    if registration.status == "cancelled":
+        raise ValueError(
+            "Registration is already cancelled."
+        )
+
+    if registration.status != "confirmed":
+        raise ValueError(
+            f"Registration cannot be cancelled because its status is '{registration.status}'."
+        )
+
+    # 3. Cancel the registration
+    registration.status = "cancelled"
+    registration.cancelled_at = func.now()
+
+    # 4. Save changes
     try:
         db.commit()
         db.refresh(registration)
