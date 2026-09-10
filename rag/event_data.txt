@@ -1,0 +1,25 @@
+Smart Event Management - Event Information
+
+Event Name: TechFest 2026
+
+Venue: Main Auditorium, Kalpataru Institute of Technology
+
+Event Date: September 20, 2026
+
+Registration:
+Participants must register online before September 15, 2026.
+Registration is open to students and faculty members.
+
+Schedule:
+09:00 AM - Registration and Welcome
+10:00 AM - Inauguration
+11:00 AM - Technical Session
+01:00 PM - Lunch Break
+02:00 PM - Project Exhibition
+04:00 PM - Prize Distribution
+05:00 PM - Closing Ceremony
+
+Important Information:
+Participants should carry their college ID cards.
+The registration desk is located near the main entrance.
+Lunch will be provided to registered participants.
