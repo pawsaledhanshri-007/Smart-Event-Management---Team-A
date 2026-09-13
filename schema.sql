@@ -16,16 +16,24 @@ CREATE EXTENSION IF NOT EXISTS "vector";     -- pgvector, for knowledge_chunks
 -- ---------------------------------------------------------------------
 CREATE TABLE users (
     id             UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-    name           VARCHAR(100)  NOT NULL,
-    email          VARCHAR(255)  NOT NULL,
-    password_hash  VARCHAR(255)  NOT NULL,
-    role           VARCHAR(20)   NOT NULL DEFAULT 'participant',
-    is_active      BOOLEAN       NOT NULL DEFAULT TRUE,
-    created_at     TIMESTAMPTZ   NOT NULL DEFAULT now(),
+    name           VARCHAR(100) NOT NULL,
+    email          VARCHAR(255) NOT NULL,
+    phone          VARCHAR(15),
+    age            INTEGER,
+    college        VARCHAR(150),
+    password_hash  VARCHAR(255) NOT NULL,
+    role           VARCHAR(20) NOT NULL DEFAULT 'participant',
+    is_active      BOOLEAN NOT NULL DEFAULT TRUE,
+    created_at     TIMESTAMPTZ NOT NULL DEFAULT now(),
     updated_at     TIMESTAMPTZ,
 
     CONSTRAINT uq_users_email UNIQUE (email),
-    CONSTRAINT ck_users_role_valid CHECK (role IN ('admin', 'organizer', 'participant'))
+
+    CONSTRAINT ck_users_role_valid
+        CHECK (role IN ('admin', 'organizer', 'participant')),
+
+    CONSTRAINT ck_users_age_valid
+        CHECK (age IS NULL OR (age > 0 AND age < 120))
 );
 
 -- ---------------------------------------------------------------------
