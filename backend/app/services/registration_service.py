@@ -145,3 +145,28 @@ def cancel_registration(
         raise
 
     return registration
+def get_registrations_by_event(
+    db: Session,
+    event_id: UUID,
+) -> list[Registration]:
+
+    return list(
+        db.scalars(
+            select(Registration).where(
+                Registration.event_id == event_id
+            )
+        ).all()
+    )
+
+def get_registrations_by_user(
+    db: Session,
+    user_id: UUID,
+) -> list[Registration]:
+
+    return list(
+        db.scalars(
+            select(Registration).where(
+                Registration.user_id == user_id
+            )
+        ).all()
+    )

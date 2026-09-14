@@ -31,6 +31,7 @@ def get_venue_available_events(
 
     return list(events)
 
+
 def check_venue_available(
     db: Session,
     venue_id: UUID,
@@ -64,3 +65,27 @@ def check_venue_available(
 
     # 4. Return availability
     return overlapping_event is None
+
+
+def get_all_venues(db: Session) -> list[Venue]:
+    return list(db.scalars(select(Venue)).all())
+
+
+def create_venue(
+    db: Session,
+    name: str,
+    location: str | None,
+    capacity: int
+) -> Venue:
+
+    venue = Venue(
+        name=name,
+        location=location,
+        capacity=capacity
+    )
+
+    db.add(venue)
+    db.commit()
+    db.refresh(venue)
+
+    return venue

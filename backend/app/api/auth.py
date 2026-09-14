@@ -38,11 +38,14 @@ def register(
         )
 
     user = User(
-        email=user_in.email,
-        name=user_in.name,
-        password_hash=security.get_password_hash(user_in.password),
-        role="participant"
-    )
+    email=user_in.email,
+    name=user_in.name,
+    phone=user_in.phone,
+    age=user_in.age,
+    college=user_in.college,
+    password_hash=security.get_password_hash(user_in.password),
+    role="participant"
+)
 
     db.add(user)
     db.commit()

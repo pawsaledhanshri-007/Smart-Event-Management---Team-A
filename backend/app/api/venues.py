@@ -27,7 +27,9 @@ def create_venue(
     venue: VenueCreate,
     db: Session = Depends(get_db)
 ):
-    return venue_service.create_venue(db, venue)
+    return venue_service.create_venue(
+    db, venue.name, venue.location, venue.capacity
+)
 
 
 @router.put("/{venue_id}", response_model=VenueResponse)

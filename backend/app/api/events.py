@@ -28,7 +28,16 @@ def create_event(
     event: EventCreate,
     db: Session = Depends(get_db)
 ):
-    return event_service.create_event(db, event)
+    return event_service.create_event(
+    db,
+    event.title,
+    event.description,
+    event.venue_id,
+    event.organizer_id,
+    event.start_time,
+    event.end_time,
+    event.capacity
+)
 
 
 @router.put("/{event_id}", response_model=EventResponse)

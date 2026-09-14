@@ -67,3 +67,6 @@ def create_event(
         raise
 
     return event
+
+def get_all_events(db: Session) -> list[Event]:
+    return list(db.scalars(select(Event)).all())

@@ -27,10 +27,10 @@ def register_for_event(
     db: Session = Depends(get_db)
 ):
     return registration_service.register_user_for_event(
-        db,
-        event_id,
-        request.user_id
-    )
+    db,
+    request.user_id,
+    event_id
+)
 
 
 @router.delete(
@@ -43,10 +43,10 @@ def cancel_registration(
     db: Session = Depends(get_db)
 ):
     registration_service.cancel_registration(
-        db,
-        event_id,
-        user_id
-    )
+    db,
+    user_id,
+    event_id
+)
     return None
 
 
