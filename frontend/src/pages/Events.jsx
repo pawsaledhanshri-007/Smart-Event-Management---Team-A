@@ -1,45 +1,30 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import Layout from '../components/Layout'
 
 function Events() {
   const [search, setSearch] = useState('')
 
-  const events = [
-    {
-      id: 1,
-      title: 'AI & Machine Learning Workshop',
-      date: '10 September 2026',
-      time: '10:00 AM - 2:00 PM',
-      venue: 'Main Auditorium',
-      seats: 50,
-      category: 'Technology',
-      description:
-        'Learn the fundamentals of Artificial Intelligence and Machine Learning through an interactive workshop.',
-    },
-    {
-      id: 2,
-      title: 'Web Development Bootcamp',
-      date: '15 September 2026',
-      time: '10:00 AM - 4:00 PM',
-      venue: 'Computer Lab 1',
-      seats: 30,
-      category: 'Development',
-      description:
-        'Learn modern web development concepts and build interactive web applications.',
-    },
-    {
-      id: 3,
-      title: 'Data Science Seminar',
-      date: '20 September 2026',
-      time: '11:00 AM - 2:00 PM',
-      venue: 'Seminar Hall',
-      seats: 100,
-      category: 'Data Science',
-      description:
-        'Explore data science concepts, analytics techniques and real-world applications.',
-    },
-  ]
+  const [events, setEvents] = useState([])
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    fetch('http://localhost:8000/api/events')
+      .then((res) => {
+        if (!res.ok) {
+          throw new Error('Failed to fetch events')
+        }
+        return res.json()
+      })
+      .then((data) => {
+        setEvents(data)
+        setLoading(false)
+      })
+      .catch((error) => {
+        console.error('Error fetching events:', error)
+        setLoading(false)
+      })
+  }, [])
 
   const filteredEvents = events.filter((event) =>
     event.title.toLowerCase().includes(search.toLowerCase())
@@ -76,7 +61,19 @@ function Events() {
         </div>
 
         {/* Event Cards */}
-        {filteredEvents.length > 0 ? (
+        {loading ? (
+          <div className="bg-white rounded-2xl shadow p-10 text-center">
+            <div className="text-4xl">⏳</div>
+
+            <h3 className="text-xl font-bold text-gray-800 mt-4">
+              Loading Events...
+            </h3>
+
+            <p className="text-gray-600 mt-2">
+              Please wait while we fetch the events.
+            </p>
+          </div>
+        ) : filteredEvents.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
 
             {filteredEvents.map((event) => (

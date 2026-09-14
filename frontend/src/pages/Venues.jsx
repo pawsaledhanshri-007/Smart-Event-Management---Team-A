@@ -1,33 +1,15 @@
+import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import Layout from '../components/Layout'
 
 function Venues() {
-  const venues = [
-    {
-      id: 1,
-      name: 'Main Auditorium',
-      location: 'Block A',
-      capacity: 500,
-      status: 'Available',
-      description: 'Large auditorium suitable for workshops, seminars and major events.',
-    },
-    {
-      id: 2,
-      name: 'Seminar Hall',
-      location: 'Block B',
-      capacity: 200,
-      status: 'Available',
-      description: 'Comfortable hall suitable for seminars, meetings and presentations.',
-    },
-    {
-      id: 3,
-      name: 'Computer Lab 1',
-      location: 'Block C',
-      capacity: 60,
-      status: 'Occupied',
-      description: 'Computer laboratory equipped for technical workshops and bootcamps.',
-    },
-  ]
+  const [venues, setVenues] = useState([])
+
+  useEffect(() => {
+    fetch('http://localhost:8000/api/venues')
+      .then((res) => res.json())
+      .then((data) => setVenues(data))
+  }, [])
 
   return (
     <Layout>
@@ -93,11 +75,10 @@ function Venues() {
                     </span>
 
                     <span
-                      className={`px-3 py-1 rounded-full text-sm font-medium ${
-                        venue.status === 'Available'
+                      className={`px-3 py-1 rounded-full text-sm font-medium ${venue.status === 'Available'
                           ? 'bg-green-100 text-green-700'
                           : 'bg-red-100 text-red-700'
-                      }`}
+                        }`}
                     >
                       {venue.status === 'Available' ? '🟢' : '🔴'}{' '}
                       {venue.status}
@@ -110,11 +91,10 @@ function Venues() {
                   onClick={() =>
                     alert(`${venue.name} is currently ${venue.status}.`)
                   }
-                  className={`mt-5 w-full py-3 rounded-lg font-semibold transition ${
-                    venue.status === 'Available'
+                  className={`mt-5 w-full py-3 rounded-lg font-semibold transition ${venue.status === 'Available'
                       ? 'bg-blue-600 text-white hover:bg-blue-700'
                       : 'bg-gray-300 text-gray-600 cursor-not-allowed'
-                  }`}
+                    }`}
                   disabled={venue.status !== 'Available'}
                 >
                   {venue.status === 'Available'
