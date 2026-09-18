@@ -1,3 +1,8 @@
+from app.schemas.venue import VenueCreate
+from app.services.venue_service import (
+    create_venue as create_venue_service,
+    delete_venue as delete_venue_service,
+)
 from datetime import datetime
 from uuid import UUID
 
@@ -116,6 +121,79 @@ def get_all_venues():
             }
             for venue in venues
         ]
+
+    finally:
+        db.close()
+@tool
+def create_venue(
+    name: str,
+    capacity: int,
+    location: str | None = None,
+):
+    """
+    Create a new venue.
+
+    Use this when an admin asks the agent to create or add a new venue.
+    """
+
+    db = SessionLocal()
+
+    try:
+        venue_data = VenueCreate(
+            name=name,
+            location=location,
+            capacity=capacity,
+        )
+
+        venue = create_venue_service(
+            db,
+            venue_data,
+        )
+
+        return {
+            "message": "Venue created successfully.",
+            "venue": {
+                "id": str(venue.id),
+                "name": venue.name,
+                "location": venue.location,
+                "capacity": venue.capacity,
+            },
+        }
+
+    except Exception as e:
+        return {
+            "error": str(e),
+        }
+
+    finally:
+        db.close()
+@tool
+def delete_venue(venue_id: str):
+    """
+    Delete a venue.
+
+    Use this when an admin asks the agent to delete or remove a venue.
+    """
+
+    db = SessionLocal()
+
+    try:
+        venue_uuid = UUID(venue_id)
+
+        delete_venue_service(
+            db,
+            venue_uuid,
+        )
+
+        return {
+            "message": "Venue deleted successfully.",
+            "venue_id": venue_id,
+        }
+
+    except Exception as e:
+        return {
+            "error": str(e),
+        }
 
     finally:
         db.close()

@@ -21,6 +21,8 @@ from app.agent.tools import (
     update_event,
     cancel_event,
     get_user_registrations,
+    create_venue,
+    delete_venue,
 )
 
 
@@ -43,6 +45,8 @@ tools = [
     update_event,
     cancel_event,
     get_user_registrations,
+    create_venue,
+    delete_venue,
 ]
 
 
