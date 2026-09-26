@@ -1,12 +1,16 @@
 from google import genai
 from sentence_transformers import SentenceTransformer
 import faiss
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
 
 
 # -----------------------------
 # Gemini client
 # -----------------------------
-client = genai.Client()
+client = genai.Client(api_key=os.getenv("GOOGLE_API_KEY"))
 
 
 # -----------------------------
