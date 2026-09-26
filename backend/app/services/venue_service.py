@@ -89,3 +89,23 @@ def create_venue(
     db.refresh(venue)
 
     return venue
+
+def delete_venue(
+    db: Session,
+    venue_id: UUID,
+) -> None:
+
+    venue = db.scalar(
+        select(Venue).where(Venue.id == venue_id)
+    )
+
+    if not venue:
+        raise ValueError("Venue does not exist.")
+
+    db.delete(venue)
+
+    try:
+        db.commit()
+    except Exception:
+        db.rollback()
+        raise

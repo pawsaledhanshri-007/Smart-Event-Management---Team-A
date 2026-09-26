@@ -70,3 +70,30 @@ def create_event(
 
 def get_all_events(db: Session) -> list[Event]:
     return list(db.scalars(select(Event)).all())
+
+def update_event(
+    db: Session,
+    event_id: UUID,
+    event_update,
+) -> Event:
+
+    event = db.scalar(
+        select(Event).where(Event.id == event_id)
+    )
+
+    if not event:
+        raise ValueError("Event does not exist.")
+
+    update_data = event_update.model_dump(exclude_unset=True)
+
+    for field, value in update_data.items():
+        setattr(event, field, value)
+
+    try:
+        db.commit()
+        db.refresh(event)
+    except Exception:
+        db.rollback()
+        raise
+
+    return event

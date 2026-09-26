@@ -17,7 +17,7 @@ client = genai.Client(api_key=os.getenv("GOOGLE_API_KEY"))
 # Load event data
 # -----------------------------
 def load_event_data():
-    with open("rag/event_data.txt", "r", encoding="utf-8") as file:
+    with open(os.path.join(os.path.dirname(__file__), "event_data.txt"), "r", encoding="utf-8") as file:
         data = file.read()
 
     print("Event data loaded successfully!")
