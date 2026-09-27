@@ -1,3 +1,4 @@
+import { useLocation } from 'react-router-dom'
 import { Navigate, Route, Routes } from 'react-router-dom'
 import ProtectedRoute from './components/ProtectedRoute'
 import RoleRoute from './components/RoleRoute'
@@ -12,6 +13,7 @@ import Venues from './pages/Venues'
 import Registrations from './pages/Registrations'
 import Profile from './pages/Profile'
 import PaymentSuccess from './pages/PaymentSuccess'
+import AdminRegister from './pages/AdminRegister'
 
 const protect = (node) => <ProtectedRoute>{node}</ProtectedRoute>
 const admin = (node) => <ProtectedRoute><RoleRoute roles={['admin']}>{node}</RoleRoute></ProtectedRoute>
@@ -21,7 +23,7 @@ export default function App() {
     <Route path="/" element={<Navigate to="/login" replace />} />
     <Route path="/login" element={<Login />} />
     <Route path="/register" element={<Register />} />
-
+    <Route path="/register-admin" element={<AdminRegister />} />
     <Route path="/agent" element={protect(<AIAssistant />)} />
     <Route path="/ai-assistant" element={<Navigate to="/agent" replace />} />
     <Route path="/dashboard" element={protect(<Dashboard />)} />

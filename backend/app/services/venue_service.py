@@ -66,6 +66,19 @@ def check_venue_available(
     # 4. Return availability
     return overlapping_event is None
 
+def get_venue_by_id(
+    db: Session,
+    venue_id: UUID,
+) -> Venue:
+
+    venue = db.scalar(
+        select(Venue).where(Venue.id == venue_id)
+    )
+
+    if not venue:
+        raise ValueError("Venue does not exist.")
+
+    return venue
 
 def get_all_venues(db: Session) -> list[Venue]:
     return list(db.scalars(select(Venue)).all())

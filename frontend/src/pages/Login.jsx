@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { useAuthContext } from '../context/AuthContext'
 import { API_URL } from '../services/api'
@@ -13,6 +13,7 @@ export default function Login() {
   const [showPassword, setShowPassword] = useState(false)
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
+  const [adminExists, setAdminExists] = useState(true)
 
   const selectType = (type) => {
     setAccountType(type)
@@ -20,6 +21,21 @@ export default function Login() {
     setPassword('')
     setError('')
   }
+
+
+  useEffect(() => {
+    const checkAdmin = async () => {
+      try {
+        const response = await fetch(`${API_URL}/auth/admin-status`)
+        const data = await response.json()
+        setAdminExists(data.admin_exists)
+      } catch {
+        setAdminExists(true)
+      }
+    }
+
+    checkAdmin()
+  }, [])
 
   const handleLogin = async (event) => {
     event.preventDefault()
@@ -51,10 +67,10 @@ export default function Login() {
       <div className="auth-brand"><span>✦</span> Evently</div>
       <div className="auth-copy">
         <span className="eyebrow">SMART EVENT MANAGEMENT</span>
-        <h1>One secure login.<br/>The right workspace.</h1>
+        <h1>One secure login.<br />The right workspace.</h1>
         <p>Choose your account type and sign in with the credentials assigned to that role.</p>
       </div>
-      <div className="soft-orb orb-one"/><div className="soft-orb orb-two"/>
+      <div className="soft-orb orb-one" /><div className="soft-orb orb-two" />
     </section>
     <section className="auth-panel">
       <form className="auth-card" onSubmit={handleLogin}>
@@ -77,7 +93,7 @@ export default function Login() {
         </label>
         <label>Password
           <div className="password-field">
-            <input required autoComplete="current-password" type={showPassword ? 'text' : 'password'} value={password} onChange={e => setPassword(e.target.value)} placeholder="Enter your password"/>
+            <input required autoComplete="current-password" type={showPassword ? 'text' : 'password'} value={password} onChange={e => setPassword(e.target.value)} placeholder="Enter your password" />
             <button type="button" onClick={() => setShowPassword(!showPassword)}>{showPassword ? 'Hide' : 'Show'}</button>
           </div>
         </label>
@@ -85,7 +101,12 @@ export default function Login() {
         <button className="primary-button" disabled={loading}>{loading ? 'Checking account...' : `Sign in as ${accountType === 'admin' ? 'Admin' : 'User'}`}</button>
         {accountType === 'user'
           ? <p className="auth-footer">New to Evently? <Link to="/register">Create a user account</Link></p>
-          : <p className="admin-help">Admin accounts are created by the system owner. Public Admin signup is disabled.</p>}
+          : adminExists
+            ? <p className="admin-help">An admin account already exists. Public Admin signup is disabled.</p>
+            : <p className="auth-footer">
+              No admin account exists yet?{' '}
+              <Link to="/register-admin">Create an admin account</Link>
+            </p>}
       </form>
     </section>
   </div>

@@ -15,6 +15,7 @@ def create_event(
     start_time,
     end_time,
     capacity: int,
+    registration_fee: float = 0,
 ) -> Event:
 
     # 1. Check venue exists
@@ -52,6 +53,7 @@ def create_event(
         start_time=start_time,
         end_time=end_time,
         capacity=capacity,
+	registration_fee=registration_fee,
         status="scheduled",
     )
 
@@ -68,8 +70,57 @@ def create_event(
 
     return event
 
+from datetime import datetime, timezone
+
+
+def _sync_event_status(event: Event) -> Event:
+    now = datetime.now(timezone.utc)
+
+    if event.status == "cancelled":
+        return event
+
+    if now >= event.end_time:
+        event.status = "completed"
+    elif now >= event.start_time:
+        event.status = "ongoing"
+    else:
+        event.status = "scheduled"
+
+    return event
+
 def get_all_events(db: Session) -> list[Event]:
-    return list(db.scalars(select(Event)).all())
+    events = list(db.scalars(select(Event)).all())
+
+    changed = False
+
+    for event in events:
+        old_status = event.status
+        _sync_event_status(event)
+
+        if old_status != event.status:
+            changed = True
+
+    if changed:
+        db.commit()
+
+    return events
+
+def get_event_by_id(db: Session, event_id: UUID) -> Event:
+    event = db.scalar(
+        select(Event).where(Event.id == event_id)
+    )
+
+    if not event:
+        raise ValueError("Event does not exist.")
+
+    old_status = event.status
+    _sync_event_status(event)
+
+    if old_status != event.status:
+        db.commit()
+        db.refresh(event)
+
+    return event
 
 def update_event(
     db: Session,

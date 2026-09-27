@@ -11,6 +11,7 @@ router = APIRouter()
 
 class AgentRequest(BaseModel):
     message: str
+    user_id: str
 
 
 class AgentResponse(BaseModel):
@@ -20,12 +21,14 @@ class AgentResponse(BaseModel):
 @router.post("/chat", response_model=AgentResponse)
 def chat_with_agent(request: AgentRequest):
     result = agent.invoke(
-        {
-            "messages": [
-                HumanMessage(content=request.message)
-            ]
-        }
-    )
+    {
+        "messages": [
+            HumanMessage(
+                content=f"Current logged-in user ID: {request.user_id}\n\nUser request: {request.message}"
+            )
+        ]
+    }
+)
 
     final_content = result["messages"][-1].content
 

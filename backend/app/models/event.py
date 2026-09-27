@@ -10,6 +10,7 @@ from sqlalchemy import (
     CheckConstraint,
     Index,
     text,
+    Numeric,
 )
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import Mapped, mapped_column, relationship
@@ -86,6 +87,12 @@ class Event(Base, TimestampMixin):
     capacity: Mapped[int] = mapped_column(
         Integer,
         nullable=False
+    )
+
+    registration_fee: Mapped[float] = mapped_column(
+        Numeric(10, 2),
+        nullable=False,
+        default=0
     )
 
     status: Mapped[str] = mapped_column(

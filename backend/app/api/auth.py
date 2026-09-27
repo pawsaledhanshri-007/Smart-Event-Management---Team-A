@@ -53,6 +53,71 @@ def register(
 
     return user
 
+@router.post(
+    "/register-admin",
+    response_model=UserSchema,
+    status_code=status.HTTP_201_CREATED
+)
+def register_admin(
+    user_in: UserCreate,
+    db: Session = Depends(get_db)
+):
+    """
+    Create the first admin account.
+    Public admin signup is allowed only when no admin exists.
+    """
+
+    existing_admin = db.query(User).filter(
+        User.role == "admin"
+    ).first()
+
+    if existing_admin:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="An admin account already exists. Admin signup is disabled.",
+        )
+
+    existing_user = db.query(User).filter(
+        User.email == user_in.email
+    ).first()
+
+    if existing_user:
+        raise HTTPException(
+            status_code=status.HTTP_409_CONFLICT,
+            detail="The user with this email already exists in the system.",
+        )
+
+    admin = User(
+        email=user_in.email,
+        name=user_in.name,
+        phone=user_in.phone,
+        age=user_in.age,
+        college=user_in.college,
+        password_hash=security.get_password_hash(user_in.password),
+        role="admin"
+    )
+
+    db.add(admin)
+    db.commit()
+    db.refresh(admin)
+
+    return admin
+
+
+@router.get("/admin-status")
+def admin_status(
+    db: Session = Depends(get_db)
+):
+    """
+    Check whether an admin account already exists.
+    """
+    admin_exists = db.query(User).filter(
+        User.role == "admin"
+    ).first() is not None
+
+    return {
+        "admin_exists": admin_exists
+    }
 
 @router.post("/login", response_model=Token)
 def login(

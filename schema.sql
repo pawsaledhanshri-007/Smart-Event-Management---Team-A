@@ -61,6 +61,7 @@ CREATE TABLE events (
     start_time     TIMESTAMPTZ   NOT NULL,
     end_time       TIMESTAMPTZ   NOT NULL,
     capacity       INTEGER       NOT NULL,
+    registration_fee NUMERIC(10,2) NOT NULL DEFAULT 0,
     status         VARCHAR(20)   NOT NULL DEFAULT 'scheduled',
     created_at     TIMESTAMPTZ   NOT NULL DEFAULT now(),
     updated_at     TIMESTAMPTZ,

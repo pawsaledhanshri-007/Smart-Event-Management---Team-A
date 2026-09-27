@@ -3,4 +3,23 @@ import Layout from '../components/Layout'
 import { useAuthContext } from '../context/AuthContext'
 import { apiFetch } from '../services/api'
 
-export default function Venues(){const{isEventManager}=useAuthContext();const[venues,setVenues]=useState([]);const[show,setShow]=useState(false);const[form,setForm]=useState({name:'',location:'',capacity:''});const[error,setError]=useState('');const load=()=>apiFetch('/venues').then(setVenues).catch(e=>setError(e.message));useEffect(load,[]);const create=async(e)=>{e.preventDefault();try{await apiFetch('/venues',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({...form,capacity:Number(form.capacity)})});setForm({name:'',location:'',capacity:''});setShow(false);load()}catch(err){setError(err.message)}};return <Layout><main className="page-container"><div className="page-heading split"><div><span className="eyebrow">SPACES FOR BETTER EXPERIENCES</span><h1>Venues</h1><p>Browse venue capacity and location before planning an event.</p></div>{isEventManager&&<button className="primary-button compact" onClick={()=>setShow(!show)}>＋ Add Venue</button>}</div>{show&&<form className="inline-create panel" onSubmit={create}><input required placeholder="Venue name" value={form.name} onChange={e=>setForm({...form,name:e.target.value})}/><input placeholder="Location" value={form.location} onChange={e=>setForm({...form,location:e.target.value})}/><input required type="number" min="1" placeholder="Capacity" value={form.capacity} onChange={e=>setForm({...form,capacity:e.target.value})}/><button className="primary-button compact">Create</button></form>}{error&&<div className="form-error">{error}</div>}<div className="card-grid">{venues.map(v=><article className="venue-card" key={v.id}><div className="venue-icon">⌖</div><h3>{v.name}</h3><p>{v.location||'Location not specified'}</p><div className="venue-capacity">◎ Up to {v.capacity} people</div></article>)}</div></main></Layout>}
+export default function Venues() {
+    const { isEventManager } = useAuthContext();
+    const [venues, setVenues] = useState([]);
+    const [show, setShow] = useState(false);
+    const [form, setForm] = useState({ name: '', location: '', capacity: '' });
+    const [error, setError] = useState('');
+    const load = () => apiFetch('/venues').then(setVenues).catch(e => setError(e.message));
+    useEffect(() => {
+        load();
+    }, []);
+    const create = async (e) => {
+        e.preventDefault();
+        try {
+            await apiFetch('/venues', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ ...form, capacity: Number(form.capacity) }) });
+            setForm({ name: '', location: '', capacity: '' });
+            setShow(false); load()
+        } catch (err) { setError(err.message) }
+    };
+    return <Layout><main className="page-container"><div className="page-heading split"><div><span className="eyebrow">SPACES FOR BETTER EXPERIENCES</span><h1>Venues</h1><p>Browse venue capacity and location before planning an event.</p></div>{isEventManager && <button className="primary-button compact" onClick={() => setShow(!show)}>＋ Add Venue</button>}</div>{show && <form className="inline-create panel" onSubmit={create}><input required placeholder="Venue name" value={form.name} onChange={e => setForm({ ...form, name: e.target.value })} /><input placeholder="Location" value={form.location} onChange={e => setForm({ ...form, location: e.target.value })} /><input required type="number" min="1" placeholder="Capacity" value={form.capacity} onChange={e => setForm({ ...form, capacity: e.target.value })} /><button className="primary-button compact">Create</button></form>}{error && <div className="form-error">{error}</div>}<div className="card-grid">{venues.map(v => <article className="venue-card" key={v.id}><div className="venue-icon">⌖</div><h3>{v.name}</h3><p>{v.location || 'Location not specified'}</p><div className="venue-capacity">◎ Up to {v.capacity} people</div></article>)}</div></main></Layout>
+}

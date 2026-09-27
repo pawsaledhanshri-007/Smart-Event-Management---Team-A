@@ -1,4 +1,4 @@
-﻿from fastapi import APIRouter, Depends
+﻿from fastapi import APIRouter, Depends, HTTPException
 from typing import List
 from uuid import UUID
 from sqlalchemy.orm import Session
@@ -6,6 +6,8 @@ from sqlalchemy.orm import Session
 from app.schemas.event import EventCreate, EventUpdate, EventResponse
 from app.services import event_service
 from app.db.session import get_db
+from app.api.deps import get_current_admin
+from app.models.user import User
 
 router = APIRouter()
 
@@ -26,18 +28,20 @@ def get_event(
 @router.post("", response_model=EventResponse, status_code=201)
 def create_event(
     event: EventCreate,
-    db: Session = Depends(get_db)
+    db: Session = Depends(get_db),
+    current_admin: User = Depends(get_current_admin),
 ):
     return event_service.create_event(
-    db,
-    event.title,
-    event.description,
-    event.venue_id,
-    event.organizer_id,
-    event.start_time,
-    event.end_time,
-    event.capacity
-)
+        db,
+        event.title,
+        event.description,
+        event.venue_id,
+        current_admin.id,
+        event.start_time,
+        event.end_time,
+        event.capacity,
+        event.registration_fee,
+    )
 
 
 @router.put("/{event_id}", response_model=EventResponse)

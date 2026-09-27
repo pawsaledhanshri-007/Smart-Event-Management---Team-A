@@ -1,4 +1,4 @@
-﻿from pydantic import BaseModel
+﻿from pydantic import BaseModel, Field
 from typing import Optional
 from datetime import datetime
 from uuid import UUID
@@ -11,12 +11,19 @@ class EventBase(BaseModel):
     end_time: datetime
     venue_id: UUID
     capacity: int
+    registration_fee: float = Field(default=0, ge=0)
     organizer_id: UUID
     status: str = "scheduled"
 
 
-class EventCreate(EventBase):
-    pass
+class EventCreate(BaseModel):
+    title: str
+    description: Optional[str] = None
+    start_time: datetime
+    end_time: datetime
+    venue_id: UUID
+    capacity: int
+    registration_fee: float = Field(default=0, ge=0)
 
 
 class EventUpdate(BaseModel):
