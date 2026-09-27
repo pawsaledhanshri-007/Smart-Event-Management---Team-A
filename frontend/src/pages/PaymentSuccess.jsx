@@ -1,0 +1,5 @@
+import { useEffect, useState } from 'react'
+import { Link, useSearchParams } from 'react-router-dom'
+import Layout from '../components/Layout'
+import { apiFetch } from '../services/api'
+export default function PaymentSuccess(){const[params]=useSearchParams();const[msg,setMsg]=useState('Confirming your Stripe payment…');const[error,setError]=useState('');useEffect(()=>{const session_id=params.get('session_id');if(!session_id){setError('Missing Stripe session id');return}apiFetch('/payments/stripe/confirm',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({session_id})}).then(()=>setMsg('Payment confirmed and your event registration is active.')).catch(e=>setError(e.message))},[]);return <Layout><main className="page-container narrow"><div className="simple-card success-card"><div className="success-mark">✓</div><h1>Payment status</h1>{!error&&<p>{msg}</p>}{error&&<div className="form-error">{error}</div>}<Link className="primary-button as-link" to="/registrations">View my registrations</Link></div></main></Layout>}
