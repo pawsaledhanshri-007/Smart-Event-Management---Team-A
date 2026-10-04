@@ -15,5 +15,6 @@ class RegistrationCreate(RegistrationBase):
 class RegistrationResponse(RegistrationBase):
     id: UUID
     registered_at: datetime
+    status: str
 
     model_config = {"from_attributes": True}

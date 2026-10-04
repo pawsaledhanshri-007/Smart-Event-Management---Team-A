@@ -75,9 +75,7 @@ def get_event_by_id(event_id: str):
         event = event_repository.get_by_id(db, event_uuid)
 
         if not event:
-            return {
-                "error": "Event not found"
-            }
+            return {"error": "Event not found"}
 
         return {
             "id": str(event.id),
@@ -92,9 +90,7 @@ def get_event_by_id(event_id: str):
         }
 
     except ValueError:
-        return {
-            "error": "Invalid event ID format. Expected a UUID."
-        }
+        return {"error": "Invalid event ID format. Expected a UUID."}
 
     finally:
         db.close()
@@ -124,6 +120,8 @@ def get_all_venues():
 
     finally:
         db.close()
+
+
 @tool
 def create_venue(
     name: str,
@@ -167,6 +165,8 @@ def create_venue(
 
     finally:
         db.close()
+
+
 @tool
 def delete_venue(venue_id: str):
     """
@@ -214,9 +214,7 @@ def get_venue_by_id(venue_id: str):
         venue = venue_repository.get_by_id(db, venue_uuid)
 
         if not venue:
-            return {
-                "error": "Venue not found"
-            }
+            return {"error": "Venue not found"}
 
         return {
             "id": str(venue.id),
@@ -226,12 +224,12 @@ def get_venue_by_id(venue_id: str):
         }
 
     except ValueError:
-        return {
-            "error": "Invalid venue ID format. Expected a UUID."
-        }
+        return {"error": "Invalid venue ID format. Expected a UUID."}
 
     finally:
         db.close()
+
+
 @tool
 def find_venues_by_capacity(required_capacity: int):
     """
@@ -256,9 +254,7 @@ def find_venues_by_capacity(required_capacity: int):
         ]
 
         if not suitable_venues:
-            return {
-                "message": f"No venue can accommodate {required_capacity} people."
-            }
+            return {"message": f"No venue can accommodate {required_capacity} people."}
 
         return {
             "required_capacity": required_capacity,
@@ -267,6 +263,8 @@ def find_venues_by_capacity(required_capacity: int):
 
     finally:
         db.close()
+
+
 @tool
 def check_venue_availability(
     venue_name: str,
@@ -283,16 +281,12 @@ def check_venue_availability(
     db = SessionLocal()
 
     try:
-        venue = (
-            db.query(Venue)
-            .filter(Venue.name.ilike(venue_name))
-            .first()
-        )
+        venue = db.query(Venue).filter(Venue.name.ilike(venue_name)).first()
 
         if not venue:
             return {
                 "available": False,
-                "message": f"Venue '{venue_name}' was not found."
+                "message": f"Venue '{venue_name}' was not found.",
             }
 
         try:
@@ -305,13 +299,13 @@ def check_venue_availability(
                     "Invalid date-time format. "
                     "Use ISO format such as "
                     "2026-09-25T10:00:00+05:30."
-                )
+                ),
             }
 
         if end_time <= start_time:
             return {
                 "available": False,
-                "message": "The requested end time must be after the start time."
+                "message": "The requested end time must be after the start time.",
             }
 
         overlapping_event = (
@@ -353,6 +347,8 @@ def check_venue_availability(
 
     finally:
         db.close()
+
+
 @tool
 def search_events(keyword: str):
     """
@@ -377,9 +373,7 @@ def search_events(keyword: str):
         )
 
         if not events:
-            return {
-                "message": f"No events found matching '{keyword}'."
-            }
+            return {"message": f"No events found matching '{keyword}'."}
 
         return [
             {
@@ -422,9 +416,7 @@ def get_upcoming_events():
         )
 
         if not events:
-            return {
-                "message": "There are no upcoming scheduled events."
-            }
+            return {"message": "There are no upcoming scheduled events."}
 
         return [
             {
@@ -434,6 +426,9 @@ def get_upcoming_events():
                 "start_time": event.start_time.isoformat(),
                 "end_time": event.end_time.isoformat(),
                 "venue_id": str(event.venue_id),
+                "venue_name": (
+                    event.venue.name if event.venue else "Venue not assigned"
+                ),
                 "capacity": event.capacity,
                 "status": event.status,
             }
@@ -442,6 +437,8 @@ def get_upcoming_events():
 
     finally:
         db.close()
+
+
 @tool
 def get_events_by_status(status: str):
     """
@@ -479,9 +476,7 @@ def get_events_by_status(status: str):
         )
 
         if not events:
-            return {
-                "message": f"No events found with status '{status}'."
-            }
+            return {"message": f"No events found with status '{status}'."}
 
         return [
             {
@@ -510,16 +505,10 @@ def get_events_at_venue(venue_name: str):
     db = SessionLocal()
 
     try:
-        venue = (
-            db.query(Venue)
-            .filter(Venue.name.ilike(venue_name))
-            .first()
-        )
+        venue = db.query(Venue).filter(Venue.name.ilike(venue_name)).first()
 
         if not venue:
-            return {
-                "message": f"Venue '{venue_name}' was not found."
-            }
+            return {"message": f"Venue '{venue_name}' was not found."}
 
         events = (
             db.query(Event)
@@ -529,9 +518,7 @@ def get_events_at_venue(venue_name: str):
         )
 
         if not events:
-            return {
-                "message": f"No events are associated with '{venue.name}'."
-            }
+            return {"message": f"No events are associated with '{venue.name}'."}
 
         return {
             "venue": {
@@ -556,6 +543,8 @@ def get_events_at_venue(venue_name: str):
 
     finally:
         db.close()
+
+
 @tool
 def get_all_registrations():
     """
@@ -601,10 +590,7 @@ def get_registrations_for_event(event_id: str):
     try:
         event_uuid = UUID(event_id)
 
-        registrations = registration_repository.get_by_event_id(
-            db,
-            event_uuid
-        )
+        registrations = registration_repository.get_by_event_id(db, event_uuid)
 
         return [
             {
@@ -623,12 +609,12 @@ def get_registrations_for_event(event_id: str):
         ]
 
     except ValueError:
-        return {
-            "error": "Invalid event ID format. Expected a UUID."
-        }
+        return {"error": "Invalid event ID format. Expected a UUID."}
 
     finally:
         db.close()
+
+
 @tool
 def register_for_event(user_id: str, event_id: str):
     """
@@ -718,6 +704,8 @@ def cancel_event_registration(user_id: str, event_id: str):
 
     finally:
         db.close()
+
+
 @tool
 def create_event(
     title: str,
@@ -745,7 +733,16 @@ def create_event(
             status=status,
         )
 
-        event = create_event_service(db, event_data)
+        event = create_event_service(
+            db=db,
+            title=event_data.title,
+            description=event_data.description,
+            venue_id=event_data.venue_id,
+            organizer_id=UUID(organizer_id),
+            start_time=event_data.start_time,
+            end_time=event_data.end_time,
+            capacity=event_data.capacity,
+        )
 
         return {
             "success": True,
@@ -877,37 +874,47 @@ def cancel_event(event_id: str):
 
 
 @tool
-def get_user_registrations(user_id: str):
-    """Get all event registrations for a specific user."""
+def get_user_registrations(
+    user_id: str,
+    include_cancelled: bool = False,
+):
+    """Get a user's active registrations.
+    Set include_cancelled=True to include cancelled registrations
+    when historical records are needed.
+    """
 
     db = SessionLocal()
 
     try:
-        registrations = (
-            db.query(Registration)
-            .filter(Registration.user_id == UUID(user_id))
-            .all()
-        )
+        query = db.query(Registration).filter(Registration.user_id == UUID(user_id))
+
+        # By default, show only active registrations.
+        if not include_cancelled:
+            query = query.filter(Registration.status != "cancelled")
+
+        registrations = query.all()
 
         result = []
 
         for registration in registrations:
-            result.append({
-                "registration_id": str(registration.id),
-                "event_id": str(registration.event_id),
-                "event_title": registration.event.title,
-                "status": registration.status,
-                "registered_at": (
-                    registration.registered_at.isoformat()
-                    if registration.registered_at
-                    else None
-                ),
-                "cancelled_at": (
-                    registration.cancelled_at.isoformat()
-                    if registration.cancelled_at
-                    else None
-                ),
-            })
+            result.append(
+                {
+                    "registration_id": str(registration.id),
+                    "event_id": str(registration.event_id),
+                    "event_title": registration.event.title,
+                    "status": registration.status,
+                    "registered_at": (
+                        registration.registered_at.isoformat()
+                        if registration.registered_at
+                        else None
+                    ),
+                    "cancelled_at": (
+                        registration.cancelled_at.isoformat()
+                        if registration.cancelled_at
+                        else None
+                    ),
+                }
+            )
 
         return {
             "success": True,
@@ -919,6 +926,120 @@ def get_user_registrations(user_id: str):
     except Exception as e:
         return {
             "success": False,
+            "error": str(e),
+        }
+
+    finally:
+        db.close()
+
+
+@tool
+def find_available_venues(
+    requested_start: str,
+    requested_end: str,
+    min_capacity: int = 1,
+    location: str | None = None,
+):
+    """
+    Find all venues available during a requested time range.
+
+    Use this tool when someone wants venue recommendations for an event.
+    Filter venues by minimum capacity and optionally by location.
+    Exclude venues occupied by non-cancelled events whose time ranges
+    overlap the requested period.
+
+    requested_start and requested_end must be ISO 8601 datetime strings
+    with timezone information, for example:
+    2026-10-15T10:00:00+05:30
+
+    min_capacity is the minimum number of people the venue must hold.
+    location is an optional partial location name, such as Visakhapatnam.
+    """
+
+    db = SessionLocal()
+
+    try:
+        try:
+            start_time = datetime.fromisoformat(requested_start)
+            end_time = datetime.fromisoformat(requested_end)
+        except (ValueError, TypeError):
+            return {
+                "success": False,
+                "message": (
+                    "Invalid date-time format. Use ISO 8601 with a timezone, "
+                    "for example 2026-10-15T10:00:00+05:30."
+                ),
+            }
+
+        if start_time.tzinfo is None or end_time.tzinfo is None:
+            return {
+                "success": False,
+                "message": "Both date-times must include timezone information.",
+            }
+
+        if end_time <= start_time:
+            return {
+                "success": False,
+                "message": "The end time must be after the start time.",
+            }
+
+        if min_capacity < 1:
+            return {
+                "success": False,
+                "message": "Minimum capacity must be at least 1.",
+            }
+
+        query = db.query(Venue).filter(Venue.capacity >= min_capacity)
+
+        if location and location.strip():
+            query = query.filter(Venue.location.ilike(f"%{location.strip()}%"))
+
+        venues = query.order_by(Venue.capacity.asc()).all()
+        available_venues = []
+
+        for venue in venues:
+            overlapping_event = (
+                db.query(Event)
+                .filter(
+                    Event.venue_id == venue.id,
+                    Event.status != "cancelled",
+                    Event.start_time < end_time,
+                    Event.end_time > start_time,
+                )
+                .first()
+            )
+
+            if overlapping_event:
+                continue
+
+            available_venues.append(
+                {
+                    "venue_id": str(venue.id),
+                    "name": venue.name,
+                    "location": venue.location,
+                    "capacity": venue.capacity,
+                }
+            )
+
+        return {
+            "success": True,
+            "requested_start": start_time.isoformat(),
+            "requested_end": end_time.isoformat(),
+            "minimum_capacity": min_capacity,
+            "location_filter": location,
+            "available_venues": available_venues,
+            "count": len(available_venues),
+            "message": (
+                f"Found {len(available_venues)} available venue(s)."
+                if available_venues
+                else "No venues match the requested location, capacity, and time."
+            ),
+        }
+
+    except Exception as e:
+        return {
+            "success": False,
+            "message": "Unable to search available venues.",
             "error": str(e),
         }
 
