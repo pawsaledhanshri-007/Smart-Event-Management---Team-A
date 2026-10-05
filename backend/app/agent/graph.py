@@ -63,12 +63,54 @@ def build_agent(user_id: str, role: str):
     """
     Construct an agent with tools selected for the authenticated user.
 
-    Participant registration tools inject the verified user ID instead
-    of allowing the model to select an arbitrary user ID.
+    The authenticated user ID is injected by the backend.
+    The model does not get to choose another user's ID.
     """
 
     if role == "admin":
-        allowed_tools = ADMIN_TOOLS.copy()
+
+        @tool("create_event")
+        def create_event_as_admin(
+            title: str,
+            description: str,
+            venue_id: str,
+            start_time: str,
+            end_time: str,
+            capacity: int,
+            registration_fee: float = 0,
+        ):
+            """
+            Create an event as the authenticated administrator.
+
+            The organizer ID is automatically taken from the authenticated
+            admin user. Do not ask the user for an organizer ID.
+            """
+            return create_event.invoke(
+                {
+                    "title": title,
+                    "description": description,
+                    "venue_id": venue_id,
+                    "organizer_id": user_id,
+                    "start_time": start_time,
+                    "end_time": end_time,
+                    "capacity": capacity,
+                    "registration_fee": registration_fee,
+                }
+            )
+
+        allowed_tools = [
+            *DISCOVERY_TOOLS,
+            get_all_registrations,
+            get_registrations_for_event,
+            register_for_event,
+            cancel_event_registration,
+            create_event_as_admin,
+            update_event,
+            cancel_event,
+            get_user_registrations,
+            create_venue,
+            delete_venue,
+        ]
 
     elif role == "participant":
 
@@ -89,7 +131,7 @@ def build_agent(user_id: str, role: str):
 
         @tool("cancel_event_registration")
         def cancel_own_event_registration(event_id: str):
-            """Cancel the logged-in participant's registration for an event."""
+            """Cancel the logged-in participant's registration."""
             return cancel_event_registration.invoke(
                 {
                     "user_id": user_id,
@@ -105,7 +147,7 @@ def build_agent(user_id: str, role: str):
         ]
 
     elif role == "organizer":
-        # Conservative default until organizer permissions are defined.
+
         allowed_tools = DISCOVERY_TOOLS.copy()
 
     else:
@@ -118,16 +160,24 @@ def build_agent(user_id: str, role: str):
         tools=allowed_tools,
         prompt=(
             "You are the Smart Event Management AI assistant. "
-            "Help the user complete event-management tasks using your available tools. "
-            "Understand the user's request and call the appropriate tool when needed. "
-            "After receiving tool results, explain the actual results in clear, "
-            "natural language. Never describe what a tool returns instead of "
-            "answering the user's question. Never output meaningless repeated "
-            "characters or exclamation marks. "
-            "For successful actions, confirm what was changed and identify the "
-            "affected event or registration. For failed actions, explain the error "
-            "honestly. Never claim an action succeeded unless the tool confirms it. "
-            "Respect the tools available to your authenticated role. "
-            "Do not invent event details, IDs, dates, or operation results."
+            "Use the available tools to perform real event-management "
+            "operations. Always use actual database results. "
+            "Never invent event IDs, venue IDs, user IDs, dates, "
+            "venues, registrations, or operation results. "
+            "For participant registration operations, operate only "
+            "on the authenticated participant. "
+            "For admin event creation, the authenticated admin is "
+            "automatically the organizer. Never ask for or invent "
+            "an organizer ID. "
+            "Before creating an event, check venue availability when "
+            "the user asks for an available venue or provides a time "
+            "range. "
+            "When a tool reports success, clearly state what happened. "
+            "When a tool reports failure, honestly report the failure. "
+            "Do not claim an operation succeeded unless the tool "
+            "actually confirms success. "
+            "For date and time values, use ISO 8601 format. "
+            "For this application in India, use +05:30 when a timezone "
+            "is required."
         ),
     )

@@ -56,7 +56,7 @@ def build_model_with_fallbacks(tools):
                 api_key=openrouter_api_key,
                 base_url=openrouter_url,
                 temperature=0,
-                max_tokens=100,
+                max_tokens=300,
             )
             models.append(model.bind_tools(tools))
 

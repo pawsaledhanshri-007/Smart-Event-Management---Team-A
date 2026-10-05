@@ -5,9 +5,7 @@ from app.api.venues import router as venues_router
 from app.api.events import router as events_router
 from app.api.registrations import router as registrations_router
 from app.api.agent import router as agent_router
-from app.api.rag import router as rag_router
 from app.api.manager import router as manager_router
-
 
 api_router = APIRouter()
 
@@ -40,11 +38,6 @@ api_router.include_router(
     tags=["Agent"],
 )
 
-api_router.include_router(
-    rag_router,
-    prefix="/rag",
-    tags=["RAG"],
-)
 api_router.include_router(
     manager_router,
     prefix="/manager",
