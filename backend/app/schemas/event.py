@@ -9,7 +9,7 @@ class EventBase(BaseModel):
     description: Optional[str] = None
     start_time: datetime
     end_time: datetime
-    venue_id: UUID
+    venue_id: Optional[UUID] = None
     capacity: int
     registration_fee: float = Field(default=0, ge=0)
     organizer_id: UUID

@@ -100,13 +100,13 @@ export default function Login() {
         {error && <div className="form-error">{error}</div>}
         <button className="primary-button" disabled={loading}>{loading ? 'Checking account...' : `Sign in as ${accountType === 'admin' ? 'Admin' : 'User'}`}</button>
         {accountType === 'user'
-          ? <p className="auth-footer">New to Evently? <Link to="/register">Create a user account</Link></p>
-          : adminExists
-            ? <p className="admin-help">An admin account already exists. Public Admin signup is disabled.</p>
-            : <p className="auth-footer">
-              No admin account exists yet?{' '}
-              <Link to="/register-admin">Create an admin account</Link>
-            </p>}
+          ? <p className="auth-footer">
+            New to Evently? <Link to="/register">Create a user account</Link>
+          </p>
+          : <p className="auth-footer">
+            Don't have an admin account?{' '}
+            <Link to="/register-admin">Create an admin account</Link>
+          </p>}
       </form>
     </section>
   </div>

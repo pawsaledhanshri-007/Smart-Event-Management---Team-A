@@ -61,11 +61,11 @@ class Event(Base, TimestampMixin):
         nullable=True
     )
 
-    venue_id: Mapped[uuid.UUID] = mapped_column(
+    venue_id: Mapped[uuid.UUID | None] = mapped_column(
     ForeignKey("venues.id", ondelete="RESTRICT"),
-    nullable=False,
+    nullable=True,
     index=True
-    )
+)
 
     organizer_id: Mapped[uuid.UUID] = mapped_column(
         ForeignKey("users.id", ondelete="RESTRICT"),
@@ -112,6 +112,8 @@ class Event(Base, TimestampMixin):
     )
 
     registrations = relationship(
-        "Registration",
-        back_populates="event"
-    )
+    "Registration",
+    back_populates="event",
+    cascade="all, delete-orphan",
+    passive_deletes=True
+)

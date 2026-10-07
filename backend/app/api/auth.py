@@ -63,19 +63,8 @@ def register_admin(
     db: Session = Depends(get_db)
 ):
     """
-    Create the first admin account.
-    Public admin signup is allowed only when no admin exists.
+        Create a new admin account.
     """
-
-    existing_admin = db.query(User).filter(
-        User.role == "admin"
-    ).first()
-
-    if existing_admin:
-        raise HTTPException(
-            status_code=status.HTTP_403_FORBIDDEN,
-            detail="An admin account already exists. Admin signup is disabled.",
-        )
 
     existing_user = db.query(User).filter(
         User.email == user_in.email

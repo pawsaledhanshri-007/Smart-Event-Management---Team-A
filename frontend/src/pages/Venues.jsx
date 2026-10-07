@@ -7,6 +7,8 @@ export default function Venues() {
     const { isEventManager } = useAuthContext();
     const [venues, setVenues] = useState([]);
     const [show, setShow] = useState(false);
+    const [deleteMode, setDeleteMode] = useState(false);
+    const [selectedVenue, setSelectedVenue] = useState('');
     const [form, setForm] = useState({ name: '', location: '', capacity: '' });
     const [error, setError] = useState('');
     const load = () => apiFetch('/venues').then(setVenues).catch(e => setError(e.message));
@@ -21,5 +23,62 @@ export default function Venues() {
             setShow(false); load()
         } catch (err) { setError(err.message) }
     };
-    return <Layout><main className="page-container"><div className="page-heading split"><div><span className="eyebrow">SPACES FOR BETTER EXPERIENCES</span><h1>Venues</h1><p>Browse venue capacity and location before planning an event.</p></div>{isEventManager && <button className="primary-button compact" onClick={() => setShow(!show)}>＋ Add Venue</button>}</div>{show && <form className="inline-create panel" onSubmit={create}><input required placeholder="Venue name" value={form.name} onChange={e => setForm({ ...form, name: e.target.value })} /><input placeholder="Location" value={form.location} onChange={e => setForm({ ...form, location: e.target.value })} /><input required type="number" min="1" placeholder="Capacity" value={form.capacity} onChange={e => setForm({ ...form, capacity: e.target.value })} /><button className="primary-button compact">Create</button></form>}{error && <div className="form-error">{error}</div>}<div className="card-grid">{venues.map(v => <article className="venue-card" key={v.id}><div className="venue-icon">⌖</div><h3>{v.name}</h3><p>{v.location || 'Location not specified'}</p><div className="venue-capacity">◎ Up to {v.capacity} people</div></article>)}</div></main></Layout>
+
+    const deleteVenue = async () => {
+        if (!selectedVenue) return;
+
+        try {
+            await apiFetch(`/venues/${selectedVenue}`, {
+                method: 'DELETE'
+            });
+
+            setSelectedVenue('');
+            setDeleteMode(false);
+            load();
+        } catch (err) {
+            setError(err.message);
+        }
+    };
+    return <Layout><main className="page-container"><div className="page-heading split"><div><span className="eyebrow">SPACES FOR BETTER EXPERIENCES</span><h1>Venues</h1><p>Browse venue capacity and location before planning an event.</p></div>{isEventManager && (
+        <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
+            <button
+                className="primary-button compact"
+                onClick={() => setShow(!show)}
+            >
+                ＋ Add Venue
+            </button>
+
+            <button
+                className="primary-button compact"
+                onClick={() => {
+                    setDeleteMode(!deleteMode);
+                    setSelectedVenue('');
+                }}
+            >
+                Delete Venue
+            </button>
+        </div>
+    )}</div>{show && <form className="inline-create panel" onSubmit={create}><input required placeholder="Venue name" value={form.name} onChange={e => setForm({ ...form, name: e.target.value })} /><input placeholder="Location" value={form.location} onChange={e => setForm({ ...form, location: e.target.value })} /><input required type="number" min="1" placeholder="Capacity" value={form.capacity} onChange={e => setForm({ ...form, capacity: e.target.value })} /><button className="primary-button compact">Create</button></form>}{deleteMode && (
+        <div className="inline-create panel">
+            <select 
+                value={selectedVenue}
+                onChange={e => setSelectedVenue(e.target.value)}
+            >
+                <option value="">Select venue to delete</option>
+                {venues.map(v => (
+                    <option key={v.id} value={v.id}>
+                        {v.name} — {v.location || 'No location'}
+                    </option>
+                ))}
+            </select>
+
+            <button
+                className="primary-button compact"
+                onClick={deleteVenue}
+                disabled={!selectedVenue}
+            >
+                Delete Selected
+            </button>
+        </div>
+    )}{error && <div className="form-error">{error}</div>}<div className="card-grid">{venues.map(v => <article className="venue-card" key={v.id}><div className="venue-icon">⌖</div><h3>{v.name}</h3><p>{v.location || 'Location not specified'}</p><div className="venue-capacity">◎ Up to {v.capacity} people</div></article>)}</div></main></Layout>
 }

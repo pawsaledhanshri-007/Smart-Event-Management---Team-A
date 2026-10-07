@@ -148,3 +148,23 @@ def update_event(
         raise
 
     return event
+
+def delete_event(
+    db: Session,
+    event_id: UUID,
+) -> None:
+
+    event = db.scalar(
+        select(Event).where(Event.id == event_id)
+    )
+
+    if not event:
+        raise ValueError("Event does not exist.")
+
+    db.delete(event)
+
+    try:
+        db.commit()
+    except Exception:
+        db.rollback()
+        raise

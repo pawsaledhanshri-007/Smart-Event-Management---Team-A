@@ -1,4 +1,4 @@
-﻿from fastapi import APIRouter, Depends
+﻿from fastapi import APIRouter, Depends, HTTPException
 from typing import List
 from uuid import UUID
 from sqlalchemy.orm import Session
@@ -46,5 +46,14 @@ def delete_venue(
     venue_id: UUID,
     db: Session = Depends(get_db)
 ):
-    venue_service.delete_venue(db, venue_id)
+    try:
+        venue_service.delete_venue(db, venue_id)
+    except ValueError as e:
+        raise HTTPException(status_code=404, detail=str(e))
+    except Exception:
+        raise HTTPException(
+            status_code=409,
+            detail="This venue cannot be deleted because it is being used by an event."
+        )
+
     return None

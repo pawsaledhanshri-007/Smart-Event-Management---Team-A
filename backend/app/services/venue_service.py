@@ -102,7 +102,6 @@ def create_venue(
     db.refresh(venue)
 
     return venue
-
 def delete_venue(
     db: Session,
     venue_id: UUID,
@@ -115,7 +114,40 @@ def delete_venue(
     if not venue:
         raise ValueError("Venue does not exist.")
 
+    # Check whether venue is being used by an active event
+    active_event = db.scalar(
+        select(Event).where(
+            Event.venue_id == venue_id,
+            Event.status.in_(["scheduled", "ongoing"])
+        )
+    )
+
+    if active_event:
+        raise ValueError(
+            "This venue cannot be deleted because it is occupied by an active event."
+        )
+
     db.delete(venue)
+
+    try:
+        db.commit()
+    except Exception:
+        db.rollback()
+        raise
+
+def delete_event(
+    db: Session,
+    event_id: UUID,
+) -> None:
+
+    event = db.scalar(
+        select(Event).where(Event.id == event_id)
+    )
+
+    if not event:
+        raise ValueError("Event does not exist.")
+
+    db.delete(event)
 
     try:
         db.commit()

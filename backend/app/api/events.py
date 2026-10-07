@@ -62,5 +62,12 @@ def delete_event(
     event_id: UUID,
     db: Session = Depends(get_db)
 ):
-    event_service.delete_event(db, event_id)
+    try:
+        event_service.delete_event(db, event_id)
+    except ValueError as e:
+        raise HTTPException(
+            status_code=409,
+            detail=str(e)
+        )
+
     return None
