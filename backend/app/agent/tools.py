@@ -142,10 +142,11 @@ def create_venue(
             location=location,
             capacity=capacity,
         )
-
         venue = create_venue_service(
             db,
-            venue_data,
+            venue_data.name,
+            venue_data.location,
+            venue_data.capacity,
         )
 
         return {
@@ -355,7 +356,6 @@ def search_events(keyword: str):
     Search events by keyword in their title or description.
     Use this when the user asks to find events related to a topic.
     """
-
     db = SessionLocal()
 
     try:
@@ -373,21 +373,43 @@ def search_events(keyword: str):
         )
 
         if not events:
-            return {"message": f"No events found matching '{keyword}'."}
-
-        return [
-            {
-                "id": str(event.id),
-                "title": event.title,
-                "description": event.description,
-                "start_time": event.start_time.isoformat(),
-                "end_time": event.end_time.isoformat(),
-                "venue_id": str(event.venue_id),
-                "capacity": event.capacity,
-                "status": event.status,
+            return {
+                "success": True,
+                "message": f"No events found matching '{keyword}'.",
+                "events": [],
+                "count": 0,
             }
-            for event in events
-        ]
+
+        result = []
+
+        for event in events:
+            result.append(
+                {
+                    "title": event.title,
+                    "description": event.description,
+                    "venue_name": (
+                        event.venue.name if event.venue else "Venue not available"
+                    ),
+                    "venue_location": (event.venue.location if event.venue else None),
+                    "start_time": event.start_time.isoformat(),
+                    "end_time": event.end_time.isoformat(),
+                    "capacity": event.capacity,
+                    "status": event.status,
+                }
+            )
+
+        return {
+            "success": True,
+            "keyword": keyword,
+            "events": result,
+            "count": len(result),
+        }
+
+    except Exception as e:
+        return {
+            "success": False,
+            "error": str(e),
+        }
 
     finally:
         db.close()
@@ -623,7 +645,6 @@ def register_for_event(user_id: str, event_id: str):
     Both user_id and event_id must be valid UUID strings.
     Use this when the user explicitly wants to register for an event.
     """
-
     db = SessionLocal()
 
     try:
@@ -636,23 +657,30 @@ def register_for_event(user_id: str, event_id: str):
             event_id=event_uuid,
         )
 
+        event = db.query(Event).filter(Event.id == event_uuid).first()
+
+        if not event:
+            return {"success": False, "error": "Event not found."}
+
         return {
             "success": True,
             "message": "User successfully registered for the event.",
             "registration": {
                 "id": str(registration.id),
-                "user_id": str(registration.user_id),
-                "event_id": str(registration.event_id),
+                "event_title": event.title,
+                "venue_name": (
+                    event.venue.name if event.venue else "Venue not available"
+                ),
+                "venue_location": (event.venue.location if event.venue else None),
+                "start_time": event.start_time.isoformat(),
+                "end_time": event.end_time.isoformat(),
                 "status": registration.status,
                 "registered_at": registration.registered_at.isoformat(),
             },
         }
 
     except ValueError as error:
-        return {
-            "success": False,
-            "error": str(error),
-        }
+        return {"success": False, "error": str(error)}
 
     finally:
         db.close()
@@ -679,15 +707,22 @@ def cancel_event_registration(user_id: str, event_id: str):
             event_id=event_uuid,
         )
 
+        event = db.query(Event).filter(Event.id == event_uuid).first()
+
+        if not event:
+            return {"success": False, "error": "Event not found."}
+
         return {
             "success": True,
             "message": "Registration successfully cancelled.",
             "registration": {
                 "id": str(registration.id),
-                "user_id": str(registration.user_id),
-                "event_id": str(registration.event_id),
+                "event_title": event.title,
+                "venue_name": (
+                    event.venue.name if event.venue else "Venue not available"
+                ),
+                "venue_location": (event.venue.location if event.venue else None),
                 "status": registration.status,
-                "registered_at": registration.registered_at.isoformat(),
                 "cancelled_at": (
                     registration.cancelled_at.isoformat()
                     if registration.cancelled_at
@@ -697,10 +732,7 @@ def cancel_event_registration(user_id: str, event_id: str):
         }
 
     except ValueError as error:
-        return {
-            "success": False,
-            "error": str(error),
-        }
+        return {"success": False, "error": str(error)}
 
     finally:
         db.close()
@@ -744,11 +776,17 @@ def create_event(
             capacity=event_data.capacity,
         )
 
+        venue = db.query(Venue).filter(Venue.id == event_data.venue_id).first()
+
         return {
             "success": True,
             "message": "Event created successfully.",
-            "event_id": str(event.id),
             "title": event.title,
+            "venue_name": (venue.name if venue else "Venue not available"),
+            "venue_location": (venue.location if venue else None),
+            "start_time": event.start_time.isoformat(),
+            "end_time": event.end_time.isoformat(),
+            "capacity": event.capacity,
             "status": event.status,
         }
 
@@ -897,20 +935,25 @@ def get_user_registrations(
         result = []
 
         for registration in registrations:
+            event = registration.event
+
             result.append(
                 {
                     "registration_id": str(registration.id),
-                    "event_id": str(registration.event_id),
-                    "event_title": registration.event.title,
+                    "event_title": event.title,
+                    "venue_name": (
+                        event.venue.name if event.venue else "Venue not available"
+                    ),
+                    "venue_location": (event.venue.location if event.venue else None),
                     "status": registration.status,
-                    "registered_at": (
-                        registration.registered_at.isoformat()
+                    "registered_date": (
+                        registration.registered_at.strftime("%Y-%m-%d")
                         if registration.registered_at
                         else None
                     ),
-                    "cancelled_at": (
-                        registration.cancelled_at.isoformat()
-                        if registration.cancelled_at
+                    "registered_time": (
+                        registration.registered_at.strftime("%I:%M %p")
+                        if registration.registered_at
                         else None
                     ),
                 }
@@ -918,7 +961,6 @@ def get_user_registrations(
 
         return {
             "success": True,
-            "user_id": user_id,
             "registrations": result,
             "count": len(result),
         }
