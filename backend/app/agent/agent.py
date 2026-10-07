@@ -18,7 +18,7 @@ def build_model_with_fallbacks(tools):
         api_key=groq_api_key,
         base_url="https://api.groq.com/openai/v1",
         temperature=0,
-        max_tokens=250,
+        max_tokens=2048,
     )
 
     return model.bind_tools(tools)
