@@ -1,12 +1,10 @@
-# Smart-Event-Management---Team-A
-# Database Documentation — Smart Event Management System
-
-{=html}
 <div align="center">
 
-<span style="color: #FFB300;">`{=html}Smart Event Management System 🚀`</span>`{=html} {#smart-event-management-system-rocket}
+# Smart Event Management 🚀
 
-<span style="color: #FFB300;">`{=html}*Agentic AI Powered Event Management & Intelligent Registration Platform*`</span>`{=html} {#agentic-ai-powered-event-management--intelligent-registration-platform}
+### *Agentic AI Powered Event Intelligence & Event Management Platform*
+
+</div>
 
 ------------------------------------------------------------------------
 
@@ -19,20 +17,19 @@
 **An End-to-End Intelligent Event Management Ecosystem with Agentic AI,
 RAG, and Database-Driven Automation.**
 
-{=html}
 </div>
-
+```
 
 ------------------------------------------------------------------------
 
-### 🔗 Project Repository {#link-project-repository}
+### 🔗 Project Repository
 
 > **💻 GitHub:** [Smart Event Management --- Team
 > A](https://github.com/pawsaledhanshri-007/Smart-Event-Management---Team-A)
 
 ------------------------------------------------------------------------
 
-### 📑 Table of Contents {#bookmark_tabs-table-of-contents}
+### 📑 Table of Contents
 
 -   [🧠 Overview](#-overview)
 -   [🎓 What Makes Smart Event Management
@@ -61,7 +58,7 @@ RAG, and Database-Driven Automation.**
 
 ------------------------------------------------------------------------
 
-### 🧠 Overview {#brain-overview}
+### 🧠 Overview
 
 **Smart Event Management System** is an intelligent, web-based event
 management ecosystem designed to simplify the complete event lifecycle
@@ -81,7 +78,7 @@ tool execution, and final response.
 
 ------------------------------------------------------------------------
 
-### 🎓 What Makes Smart Event Management Different? {#mortar_board-what-makes-smart-event-management-different}
+### 🎓 What Makes Smart Event Management Different?
 
   Feature                Traditional Event Platforms     🚀 Smart Event Management
   ---------------------- ------------------------------- -------------------------------------------------
@@ -95,19 +92,17 @@ tool execution, and final response.
 
 ------------------------------------------------------------------------
 
-```{=html}
 <div align="center">
 ```
-## 🏛️ Core Philosophy {#classical_building-core-philosophy}
+## 🏛️ Core Philosophy
 
-# `<span style="color: #FFB300;">`{=html}Discover. Automate. Manage.`</span>`{=html} {#discover-automate-manage}
+# <span style="color: #FFB300;">Discover. Automate. Manage.</span>
 
 *Reducing the friction between event discovery, registration, and
 intelligent assistance.*
 
 ------------------------------------------------------------------------
 
-```{=html}
 </div>
 ```
 Smart Event Management operates on three fundamental principles:
@@ -123,7 +118,7 @@ Smart Event Management operates on three fundamental principles:
 
 ------------------------------------------------------------------------
 
-### ✨ Key Features {#sparkles-key-features}
+### ✨ Key Features
 
   🛠️ Feature                       📝 Description
   -------------------------------- -----------------------------------------------------------------------------------------------
@@ -139,7 +134,7 @@ Smart Event Management operates on three fundamental principles:
 
 ------------------------------------------------------------------------
 
-## 🚀 Core Capabilities {#rocket-core-capabilities}
+## 🚀 Core Capabilities
 
   Capability                  Technical Realization                    Impact
   --------------------------- ---------------------------------------- ----------------------------------------------------------------------------
@@ -152,7 +147,7 @@ Smart Event Management operates on three fundamental principles:
 
 ------------------------------------------------------------------------
 
-## 👥 Target Audience {#busts_in_silhouette-target-audience}
+## 👥 Target Audience
 
   User Group                  Use Case                                Primary Benefit
   --------------------------- --------------------------------------- ---------------------------------------------
@@ -164,7 +159,7 @@ Smart Event Management operates on three fundamental principles:
 
 ------------------------------------------------------------------------
 
-## 💻 Technology Stack {#computer-technology-stack}
+## 💻 Technology Stack
 
   Layer                  Technology                                                                                                          Purpose
   ---------------------- ------------------------------------------------------------------------------------------------------------------- -------------------------------------------------------------------
@@ -184,16 +179,16 @@ Smart Event Management operates on three fundamental principles:
 
 ------------------------------------------------------------------------
 
-## 🏗️ System Architecture {#building_construction-system-architecture}
+## 🏗️ System Architecture
 
 Smart Event Management follows a decoupled architecture where the
 frontend communicates with the FastAPI backend, while the backend
 coordinates business services, the Agentic AI workflow, RAG retrieval,
 and PostgreSQL.
 
-### 📐 High-Level Architecture {#triangular_ruler-high-level-architecture}
+### 📐 High-Level Architecture
 
-mermaid
+``` mermaid
 graph TD
     User((User)) <--> |Web UI| Frontend[Frontend UI Layer]
     Frontend <--> |REST API| Backend[FastAPI Backend]
@@ -209,9 +204,9 @@ graph TD
     ORM <--> DB[(PostgreSQL)]
     DB --> Vector[(pgvector)]
     RAG <--> Vector
+```
 
-
-### 🔄 Request Flow Architecture {#arrows_counterclockwise-request-flow-architecture}
+### 🔄 Request Flow Architecture
 
 The step-by-step lifecycle of a natural-language request from user input
 to final response.
@@ -243,7 +238,7 @@ sequenceDiagram
     F-->>U: Display result
 ```
 
-### 🔄 Complete System Flow {#arrows_counterclockwise-complete-system-flow}
+### 🔄 Complete System Flow
 
 The internal architectural logic showing how the backend handles
 traditional operations and Agentic AI requests.
@@ -280,7 +275,7 @@ flowchart TD
 
 ------------------------------------------------------------------------
 
-### ⚙️ Event Management Pipeline {#gear-event-management-pipeline}
+### ⚙️ Event Management Pipeline
 
 The transformation of a user action into a validated database operation
 follows a structured pipeline:
@@ -297,14 +292,14 @@ follows a structured pipeline:
 
 ------------------------------------------------------------------------
 
-## 🤖 Agentic AI Engine {#robot-agentic-ai-engine}
+## 🤖 Agentic AI Engine
 
 The Agentic AI component is designed to do more than generate text. It
 can understand a user\'s intent, select controlled tools, execute
 actions, observe their results, and decide whether another step is
 required.
 
-### 🔧 How It\'s Enabled {#wrench-how-its-enabled}
+### 🔧 How It\'s Enabled
 
 The agent is triggered when a user sends a natural-language request. It
 works through a controlled workflow:
@@ -317,7 +312,7 @@ works through a controlled workflow:
 5.  **Continuation:** Decide whether another action is required.
 6.  **Response:** Return a final grounded response.
 
-### 🔄 Agentic Flow Diagram {#arrows_counterclockwise-agentic-flow-diagram}
+### 🔄 Agentic Flow Diagram
 
 ``` mermaid
 flowchart TD
@@ -345,7 +340,7 @@ flowchart TD
 
 ------------------------------------------------------------------------
 
-## 🔬 Business Layer & Tool Logic {#microscope-business-layer--tool-logic}
+## 🔬 Business Layer & Tool Logic
 
 The **Business Layer** sits between the API layer and the database
 layer. In this project, the service layer contains the
@@ -408,12 +403,12 @@ operations. Tools call the backend business services.
 
 ------------------------------------------------------------------------
 
-## 🗺️ User Journey & Experience Map {#world_map-user-journey--experience-map}
+## 🗺️ User Journey & Experience Map
 
 Smart Event Management is designed to provide a frictionless path from
 event discovery to registration and intelligent assistance.
 
-### 🔄 The End-to-End Journey {#arrows_counterclockwise-the-end-to-end-journey}
+### 🔄 The End-to-End Journey
 
   Stage                 User Goal                        System Touchpoint       Experience
   --------------------- -------------------------------- ----------------------- --------------
@@ -427,7 +422,7 @@ event discovery to registration and intelligent assistance.
 
 ------------------------------------------------------------------------
 
-## 🖥️ Screen-by-Screen Breakdown {#desktop_computer-screen-by-screen-breakdown}
+## 🖥️ Screen-by-Screen Breakdown
 
 The interface is designed around the main event-management lifecycle and
 the conversational AI experience.
@@ -446,7 +441,7 @@ the conversational AI experience.
 
 ------------------------------------------------------------------------
 
-## 🚀 Landing Screen {#rocket-landing-screen}
+## 🚀 Landing Screen
 
 The landing page introduces the platform\'s core value proposition:
 managing events through a conventional interface while also providing
@@ -462,7 +457,7 @@ intelligent conversational assistance.
 
 ------------------------------------------------------------------------
 
-## 🏁 Onboarding Screen {#checkered_flag-onboarding-screen}
+## 🏁 Onboarding Screen
 
 The onboarding flow prepares a user to interact with the
 event-management ecosystem.
@@ -478,9 +473,9 @@ event-management ecosystem.
 
 ------------------------------------------------------------------------
 
-## ⚙️ Event & Registration Screen Breakdown {#gear-event--registration-screen-breakdown}
+## ⚙️ Event & Registration Screen Breakdown
 
-### 🛠️ Event Management Screen {#hammer_and_wrench-event-management-screen}
+### 🛠️ Event Management Screen
 
   Feature                Control Type      Logic / Impact
   ---------------------- ----------------- ----------------------------------------------------------
@@ -493,7 +488,7 @@ event-management ecosystem.
 
 ------------------------------------------------------------------------
 
-### 🎟️ Registration Interface {#tickets-registration-interface}
+### 🎟️ Registration Interface
 
 The registration environment applies business rules before storing a
 registration.
@@ -508,7 +503,7 @@ registration.
 
 ------------------------------------------------------------------------
 
-### 🤖 AI Assistant Screen {#robot-ai-assistant-screen}
+### 🤖 AI Assistant Screen
 
 The AI Assistant provides conversational access to event operations and
 knowledge.
@@ -525,7 +520,7 @@ knowledge.
 
 ------------------------------------------------------------------------
 
-## 🏗️ Layout Component Architecture {#building_construction-layout-component-architecture}
+## 🏗️ Layout Component Architecture
 
 The Smart Event Management UI follows a modular layout system so that
 navigation and core application structure remain consistent across
@@ -543,7 +538,7 @@ different workflows.
 
 ------------------------------------------------------------------------
 
-### 🎨 Visual Hierarchy Breakdown {#art-visual-hierarchy-breakdown}
+### 🎨 Visual Hierarchy Breakdown
 
 The layout follows a clear application hierarchy:
 
@@ -559,13 +554,13 @@ The layout follows a clear application hierarchy:
 
 ------------------------------------------------------------------------
 
-## 🗄️ Database Architecture & Design {#file_cabinet-database-architecture--design}
+## 🗄️ Database Architecture & Design
 
 The database is the persistent foundation of the system. PostgreSQL
 stores transactional application data while pgvector supports the vector
 representation required for RAG.
 
-### 🧱 Core Application Tables {#bricks-core-application-tables}
+### 🧱 Core Application Tables
 
   Table               Purpose
   ------------------- ---------------------------------------------------------
@@ -574,7 +569,7 @@ representation required for RAG.
   **events**          Event details, organizer, venue, schedule and capacity.
   **registrations**   Relationship between users and events.
 
-### 🤖 Agent / Observability Tables {#robot-agent--observability-tables}
+### 🤖 Agent / Observability Tables
 
   Table                Purpose
   -------------------- --------------------------------------------------------
@@ -583,7 +578,7 @@ representation required for RAG.
   **tool_calls**       Stores tools executed during agent runs.
   **audit_logs**       Stores important system/user actions for traceability.
 
-### 📚 RAG Tables {#books-rag-tables}
+### 📚 RAG Tables
 
   Table                     Purpose
   ------------------------- -----------------------------------------------
@@ -592,7 +587,7 @@ representation required for RAG.
 
 ------------------------------------------------------------------------
 
-### 🔗 Database Relationship Diagram {#link-database-relationship-diagram}
+### 🔗 Database Relationship Diagram
 
 ``` mermaid
 erDiagram
@@ -611,7 +606,7 @@ erDiagram
 
 ------------------------------------------------------------------------
 
-### 🔐 Database Integrity & Constraints {#closed_lock_with_key-database-integrity--constraints}
+### 🔐 Database Integrity & Constraints
 
 The database uses relational constraints to prevent invalid data.
 
@@ -624,7 +619,7 @@ The database uses relational constraints to prevent invalid data.
   **Indexes**             Frequently queried foreign keys and timestamps
   **Delete Rules**        CASCADE, RESTRICT and SET NULL where appropriate
 
-### 🔄 Registration Data Flow {#arrows_counterclockwise-registration-data-flow}
+### 🔄 Registration Data Flow
 
 ``` mermaid
 flowchart TD
@@ -640,12 +635,12 @@ flowchart TD
 
 ------------------------------------------------------------------------
 
-## 🔎 RAG & Knowledge Retrieval System {#mag_right-rag--knowledge-retrieval-system}
+## 🔎 RAG & Knowledge Retrieval System
 
 The RAG subsystem allows the AI assistant to answer knowledge and
 policy-related questions using stored project information.
 
-### 📚 RAG Pipeline {#books-rag-pipeline}
+### 📚 RAG Pipeline
 
 ``` mermaid
 flowchart TD
@@ -662,7 +657,7 @@ flowchart TD
     J --> K[Grounded Answer]
 ```
 
-### 📊 RAG Components {#bar_chart-rag-components}
+### 📊 RAG Components
 
   Component           Purpose
   ------------------- ------------------------------------------------------
@@ -675,12 +670,12 @@ flowchart TD
 
 ------------------------------------------------------------------------
 
-## 📊 Agent Observability & Audit System {#bar_chart-agent-observability--audit-system}
+## 📊 Agent Observability & Audit System
 
 The system records AI execution information so that agent behaviour can
 be traced and evaluated.
 
-### 🔄 Agent Observability Flow {#arrows_counterclockwise-agent-observability-flow}
+### 🔄 Agent Observability Flow
 
 ``` mermaid
 flowchart TD
@@ -692,7 +687,7 @@ flowchart TD
     F --> G[Audit / Observability Data]
 ```
 
-### 📋 Recorded Information {#clipboard-recorded-information}
+### 📋 Recorded Information
 
   Data                      Purpose
   ------------------------- ----------------------------------------------
@@ -709,12 +704,12 @@ flowchart TD
 
 ------------------------------------------------------------------------
 
-## 💻 Developer\'s Portal {#computer-developers-portal}
+## 💻 Developer\'s Portal
 
 This section provides the technical roadmap for setting up a local
 development environment for Smart Event Management.
 
-### 📋 Prerequisites {#clipboard-prerequisites}
+### 📋 Prerequisites
 
 -   **Python 3.12+**: For FastAPI, SQLAlchemy and Agentic AI backend
     development.
@@ -726,7 +721,7 @@ development environment for Smart Event Management.
 -   **pgvector**: Required for vector-based RAG functionality when
     enabled.
 
-### 🛠️ Installation & Setup {#hammer_and_wrench-installation--setup}
+### 🛠️ Installation & Setup
 
 1.  **Clone the Project**
 
@@ -779,7 +774,7 @@ development environment for Smart Event Management.
 
 ------------------------------------------------------------------------
 
-## 🐳 Docker Development {#whale-docker-development}
+## 🐳 Docker Development
 
 The project supports containerized backend and database execution.
 
@@ -820,7 +815,7 @@ Compose configuration.
 
 ------------------------------------------------------------------------
 
-## 🔄 Database Migrations {#arrows_counterclockwise-database-migrations}
+## 🔄 Database Migrations
 
 Alembic is used for database schema versioning.
 
@@ -853,7 +848,7 @@ existing database should not be blindly dropped or recreated.
 
 ------------------------------------------------------------------------
 
-## 🧪 Testing {#test_tube-testing}
+## 🧪 Testing
 
 The project includes a `tests/` area for validating the application.
 
@@ -869,7 +864,7 @@ Testing areas include:
 
 ------------------------------------------------------------------------
 
-## 🔐 Security {#closed_lock_with_key-security}
+## 🔐 Security
 
 The system is designed with multiple security layers:
 
@@ -890,12 +885,12 @@ must not be committed to Git.
 
 ------------------------------------------------------------------------
 
-## 🔮 Future Roadmap {#crystal_ball-future-roadmap}
+## 🔮 Future Roadmap
 
 Smart Event Management is evolving from a conventional event-management
 application into a more autonomous event-management assistant.
 
-### 🛠️ Phase 1: MVP Completion {#hammer_and_wrench-phase-1-mvp-completion}
+### 🛠️ Phase 1: MVP Completion
 
 -   [ ] Complete core event CRUD
 -   [ ] Complete venue management
@@ -905,7 +900,7 @@ application into a more autonomous event-management assistant.
 -   [ ] Complete database integration
 -   [ ] Validate Docker development environment
 
-### 🤖 Phase 2: Agentic Intelligence {#robot-phase-2-agentic-intelligence}
+### 🤖 Phase 2: Agentic Intelligence
 
 -   [ ] Expand controlled business tools
 -   [ ] Multi-step event-management workflows
@@ -914,7 +909,7 @@ application into a more autonomous event-management assistant.
 -   [ ] Agent evaluation and tracing
 -   [ ] Personalized event recommendations
 
-### 🧠 Phase 3: RAG & Advanced Automation {#brain-phase-3-rag--advanced-automation}
+### 🧠 Phase 3: RAG & Advanced Automation
 
 -   [ ] Expand knowledge base
 -   [ ] Improve semantic retrieval
@@ -926,7 +921,7 @@ application into a more autonomous event-management assistant.
 
 ------------------------------------------------------------------------
 
-## 🤝 Contributing {#handshake-contributing}
+## 🤝 Contributing
 
 Contributions are welcome.
 
@@ -942,7 +937,7 @@ Contributions are welcome.
 
 ------------------------------------------------------------------------
 
-## 👥 Meet the Team {#busts_in_silhouette-meet-the-team}
+## 👥 Meet the Team
 
 **Smart Event Management --- Team A** is a 7-member project developed
 through separate module responsibilities covering Database, Backend,
@@ -959,14 +954,14 @@ Testing/Integration/Deployment.
   **Frontend**                             User interface, dashboards, event and registration workflows.
   **Testing / Integration / Deployment**   Testing, integration, Docker and deployment workflow.
 
-### 📩 Project Contact {#envelope_with_arrow-project-contact}
+### 📩 Project Contact
 
 For project-related technical discussions, refer to the **Smart Event
 Management --- Team A** repository and the assigned module owners.
 
 ------------------------------------------------------------------------
 
-## 📜 License {#scroll-license}
+## 📜 License
 
 This project is developed as an academic/team project. Refer to the
 repository `LICENSE` file for the applicable license terms.
