@@ -966,12 +966,12 @@ Contributions are welcome.
 | Module | Scope | Owner |
 | :--- | :--- | :--- |
 | **Database** | Schema, models, migrations, services, seed data | Alisha |
-| **Backend** | FastAPI app, routers, CORS, route guards, API docs | Hima |
+| **Backend** | FastAPI app, routers, CORS, route guards, API docs | Hima L |
 | **Authentication & Security** | Register, login, JWT, route guards, admin seeding | Kunal Paliwal |
 | **Agentic AI** | LangGraph agent, role-based tools, Groq integration | Ganesh Kota |
-| **RAG** | Embeddings, FAISS search, Gemini answers | Harshitha |
+| **RAG** | Embeddings, FAISS search, Gemini answers | Harshitha AR |
 | **Frontend** | React UI, role-based navigation, API integration | Kaif Ansari |
-| **Integration & Deployment** | Service wiring, environment config, testing, release | Dhanshri Pawsale |
+| **Integration, Testing & Deployment** | Service wiring, environment config, testing, release | Dhanshri Pawsale |
 
 ### 📩 Project Contact
 
