@@ -18,7 +18,7 @@
 RAG, and Database-Driven Automation.**
 
 </div>
-```
+
 
 ------------------------------------------------------------------------
 
@@ -94,7 +94,7 @@ tool execution, and final response.
 
 <div align="center">
 ```
-## 🏛️ Core Philosophy
+🏛️ Core Philosophy
 
 # <span style="color: #FFB300;">Discover. Automate. Manage.</span>
 
