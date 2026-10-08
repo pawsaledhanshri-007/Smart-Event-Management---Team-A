@@ -1,12 +1,12 @@
 # Smart-Event-Management---Team-A
 # Database Documentation — Smart Event Management System
 
-```{=html}
+{=html}
 <div align="center">
-```
-# `<span style="color: #FFB300;">`{=html}Smart Event Management System 🚀`</span>`{=html} {#smart-event-management-system-rocket}
 
-### `<span style="color: #FFB300;">`{=html}*Agentic AI Powered Event Management & Intelligent Registration Platform*`</span>`{=html} {#agentic-ai-powered-event-management--intelligent-registration-platform}
+<span style="color: #FFB300;">`{=html}Smart Event Management System 🚀`</span>`{=html} {#smart-event-management-system-rocket}
+
+<span style="color: #FFB300;">`{=html}*Agentic AI Powered Event Management & Intelligent Registration Platform*`</span>`{=html} {#agentic-ai-powered-event-management--intelligent-registration-platform}
 
 ------------------------------------------------------------------------
 
@@ -19,9 +19,9 @@
 **An End-to-End Intelligent Event Management Ecosystem with Agentic AI,
 RAG, and Database-Driven Automation.**
 
-```{=html}
+{=html}
 </div>
-```
+
 
 ------------------------------------------------------------------------
 
@@ -193,7 +193,7 @@ and PostgreSQL.
 
 ### 📐 High-Level Architecture {#triangular_ruler-high-level-architecture}
 
-``` mermaid
+mermaid
 graph TD
     User((User)) <--> |Web UI| Frontend[Frontend UI Layer]
     Frontend <--> |REST API| Backend[FastAPI Backend]
@@ -209,7 +209,7 @@ graph TD
     ORM <--> DB[(PostgreSQL)]
     DB --> Vector[(pgvector)]
     RAG <--> Vector
-```
+
 
 ### 🔄 Request Flow Architecture {#arrows_counterclockwise-request-flow-architecture}
 
