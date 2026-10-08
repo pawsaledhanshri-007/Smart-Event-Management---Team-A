@@ -93,8 +93,8 @@ tool execution, and final response.
 ------------------------------------------------------------------------
 
 <div align="center">
-```
-🏛️ Core Philosophy
+
+## 🏛️ Core Philosophy
 
 # <span style="color: #FFB300;">Discover. Automate. Manage.</span>
 
@@ -104,7 +104,7 @@ intelligent assistance.*
 ------------------------------------------------------------------------
 
 </div>
-```
+
 Smart Event Management operates on three fundamental principles:
 
 1.  **🤖 Agentic Intelligence:** Natural-language requests are
